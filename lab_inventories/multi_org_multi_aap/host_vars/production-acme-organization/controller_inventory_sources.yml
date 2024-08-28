@@ -1,0 +1,14 @@
+---
+controller_inventory_sources:
+  - name: satellite-hosts-source
+    organization: "{{ ansible_organization_name }}"
+    source: satellite6
+    inventory: satellite-hosts
+    credential: satellite-admin
+    overwrite: true
+    overwrite_vars: true
+    update_cache_timeout: 0
+    # https://access.redhat.com/solutions/6995422
+    source_vars:
+      validate_certs: false
+...

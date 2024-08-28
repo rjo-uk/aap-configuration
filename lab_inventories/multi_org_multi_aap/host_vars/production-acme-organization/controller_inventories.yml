@@ -1,0 +1,6 @@
+---
+controller_inventories:
+  - name: satellite-hosts
+    description: A dynamic inventory from Red Hat Satellite
+    organization: "{{ ansible_organization_name }}"
+...
