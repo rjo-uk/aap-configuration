@@ -1,0 +1,5 @@
+---
+controller_organizations:
+  - name: "{{ ansible_organization_name }}"
+    description: "{{ ansible_organization_description }}"
+...

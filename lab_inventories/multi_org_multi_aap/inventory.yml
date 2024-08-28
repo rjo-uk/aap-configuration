@@ -1,0 +1,62 @@
+---
+ACME_Organization:
+  hosts:
+    production-acme-organization:
+      controller_hostname: https://production.aap.example.com
+      controller_validate_certs: false
+      controller_username: admin
+      controller_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64653563643633393937366439653764316430646532376163623737346135363165316239346531
+    development-acme-organization:
+      controller_hostname: https://development.aap.example.com
+      controller_validate_certs: false
+      controller_username: admin
+      controller_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64653563643633393937366439653764316430646532376163623737346135363165316239346531
+  vars:
+    ansible_connection: local
+    ansible_organization_name: "ACME Organization"
+    ansible_organization_description: "ACME Organization"
+Internal_Organization:
+  hosts:
+    production-internal-organization:
+      controller_hostname: https://production.aap.example.com
+      controller_validate_certs: false
+      controller_username: admin
+      controller_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64653563643633393937366439653764316430646532376163623737346135363165316239346531
+    development-internal-organization:
+      controller_hostname: https://development.aap.example.com
+      controller_validate_certs: false
+      controller_username: admin
+      controller_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64653563643633393937366439653764316430646532376163623737346135363165316239346531
+  vars:
+    ansible_connection: local
+    ansible_organization_name: "Internal Organization"
+    ansible_organization_description: "Internal Organization"
+External_Organization:
+  hosts:
+    production-external-organization:
+      controller_hostname: https://production.aap.example.com
+      controller_validate_certs: false
+      controller_username: admin
+      controller_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64653563643633393937366439653764316430646532376163623737346135363165316239346531
+    development-external-organization:
+      controller_hostname: https://development.aap.example.com
+      controller_validate_certs: false
+      controller_username: admin
+      controller_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64653563643633393937366439653764316430646532376163623737346135363165316239346531
+  vars:
+    ansible_connection: local
+    ansible_organization_name: "External Organization"
+    ansible_organization_description: "External Organization"
+...

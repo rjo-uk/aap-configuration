@@ -1,0 +1,9 @@
+---
+- name: Playbook to configure AAP
+  hosts: all
+  connection: local
+  tasks:
+    - name: Call dispatch role
+      ansible.builtin.include_role:
+        name: infra.controller_configuration.dispatch
+...
