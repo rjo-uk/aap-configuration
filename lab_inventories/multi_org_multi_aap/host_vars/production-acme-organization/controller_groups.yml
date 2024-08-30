@@ -1,0 +1,6 @@
+---
+controller_groups:
+  - name: satellite_upgrade_group
+    description: A group of hosts which can be upgraded via IPU
+    inventory: satellite-hosts
+...
