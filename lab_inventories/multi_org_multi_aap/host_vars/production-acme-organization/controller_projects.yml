@@ -4,8 +4,8 @@ controller_projects:
     description: leap-rjo git repo
     organization: "{{ ansible_organization_name }}"
     scm_type: git
-    scm_url: https://github.com/redhat-partner-tech/leapp-project.git
-    scm_branch: main
+    scm_url: https://github.com/rjo-uk/leapp.git
+    scm_branch: dev
     scm_clean: true
     scm_update_on_launch: false
     scm_credential: ""
