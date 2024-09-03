@@ -1,10 +1,10 @@
 ---
 controller_inventory_sources:
-  - name: satellite-hosts-source
+  - name: inv_src_satellite_production
     organization: "{{ ansible_organization_name }}"
     source: satellite6
-    inventory: satellite-hosts
-    credential: satellite-admin
+    inventory: inv_satellite_production
+    credential: cred_sat6_admin
     overwrite: true
     overwrite_vars: true
     update_cache_timeout: 0
