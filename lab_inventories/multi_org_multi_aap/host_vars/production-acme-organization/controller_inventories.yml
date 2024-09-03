@@ -1,6 +1,6 @@
 ---
 controller_inventories:
-  - name: satellite-hosts
+  - name: inv_satellite_production
     description: A dynamic inventory from Red Hat Satellite
     organization: "{{ ansible_organization_name }}"
 ...
