@@ -2,6 +2,10 @@
 - name: Playbook to configure AAP
   hosts: all
   connection: local
+  vars:
+    # Increase number of async retries so that large projects have time to sync on controller
+    # https://github.com/redhat-cop/controller_configuration/tree/devel/roles/projects
+    controller_configuration_async_retries: 120
   tasks:
     - name: Call dispatch role
       ansible.builtin.include_role:
