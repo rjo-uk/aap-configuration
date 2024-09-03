@@ -1,7 +1,7 @@
 ---
 controller_projects:
-  - name: leapp-rjo
-    description: leap-rjo git repo
+  - name: prj_leapp
+    description: LEAPP Upgrade playbooks from leap-rjo git repo
     organization: "{{ ansible_organization_name }}"
     scm_type: git
     scm_url: https://github.com/rjo-uk/leapp.git
