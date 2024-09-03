@@ -1,0 +1,92 @@
+---
+controller_templates:
+  - name: tpl_leapp_analysis
+    description: Perform leapp analysis
+    project: prj_leapp
+    playbook: analysis.yml
+    inventory: inv_satellite_production
+    limit: client2.london.example.com
+    credentials:
+      - cred_mach_root
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: upgrade_group
+          choices:
+            - grp_satellite_upgrade
+          required: true
+    ask_variables_on_launch: false
+    ask_limit_on_launch: true
+  - name: tpl_leapp_ipu
+    description: In-place operating system upgrade
+    project: prj_leapp
+    playbook: in-place-upgrade.yml
+    inventory: inv_satellite_production
+    limit: client2.london.example.com
+    credentials:
+      - cred_mach_root
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: upgrade_group
+          choices:
+            - grp_satellite_upgrade
+          required: true
+    ask_variables_on_launch: true
+    ask_limit_on_launch: true
+  - name: tpl_leapp_remediate
+    description: Perform remediations needed to successfully perform IPU
+    project: prj_leapp
+    playbook: remediate.yml
+    inventory: inv_satellite_production
+    limit: client2.london.example.com
+    credentials:
+      - cred_mach_root
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: upgrade_group
+          choices:
+            - grp_satellite_upgrade
+          required: true
+    ask_variables_on_launch: true
+    ask_limit_on_launch: true
+  - name: tpl_leapp_bigboot
+    description: Configure boot partition size
+    project: prj_leapp
+    playbook: bigboot.yml
+    inventory: inv_satellite_production
+    limit: client2.london.example.com
+    credentials:
+      - cred_mach_root
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: upgrade_group
+          choices:
+            - grp_satellite_upgrade
+          required: true
+        - question_name: Set size of /boot partition
+          type: text
+          variable: partition_size
+          default: "1.5G"
+          required: false
+    ask_variables_on_launch: false
+    ask_limit_on_launch: true
+...
