@@ -47,8 +47,101 @@ The playbook to configure AAP is named [aap-configuration.yml](aap-configuration
 The documentation below covers the following scenarios:
 
 * Configuration of a single Organization running on a single AAP server
-* Configuration of a single Organization running on two AAP servers - one being a 'production' AAP server and one being a 'development' AAP server.  The 'development' AAP server has a similar configuration as production but uses a different AAP manifest file and (optionally) different credentials, projects, tempaltes and inventories.
+* Configuration of a single Organization running on two AAP servers - one being a 'production' AAP server and one being a 'development' AAP server.  The 'development' AAP server has a similar configuration as production but uses a different AAP manifest file and (optionally) different credentials, projects, templates and inventories.
 * Configuration of multiple Organizations running many different AAP servers, with configuration split between:
     - Configuration that is common in all Organizations
     - Configuration that is unique to an Organization
     - Configuration that is unique to a specific Organization on a specific AAP server
+
+## Naming Conventions
+
+Although not required, a standard naming convention for Ansible Automation Platform resources provides support teams with a consistent experience and allows automation and scripting tools to use pattern matching and regular expressions to audit and manipulate the environment.  This repository uses a naming approach similar to the one used for [satellite-configuration](https://github.com/rjo-uk/satellite-configuration) and includes some opinionated conventions.
+
+### Overview
+
+Avoid special characters such as `@ ! " ' , ? # : ;` in object names, as this allows objects to be manipulated easily in CSV and YAML formats.  If there is an established naming convention (eg for a platform) consider replicating it.  Although AAP objects can often be renamed, you may find that a new object is created instead.  As an example, if a Project is initially created as the name `prj-rhel-upgrade` and is subsequently updated in the code to `proj-rhel-7-upgrade`, you might end up with two projects.  This can cause confusion.  It is advisable to avoid this if possible by configuring your resources in the yaml files and performing some analysis before implementing the configuration.  The [controller_object_diff](https://github.com/redhat-cop/controller_configuration/blob/devel/plugins/lookup/controller_object_diff.py) lookup can also be used to identify differences between the live and desired configuration to see if these types of change have occurred or if manual configuration has been made.
+
+
+### Credentials
+
+| Naming Convention | Examples |
+|       :---:       |  :---:   |
+| cred _ < type (short form) > _ < username > [ _ environment ] | cred_mach_root |
+| | cred_mach_root_production |
+| | cred_sat6_admin |
+| | cred_api_redhat_insights |
+| | cred_api_snow_prod |
+| | cred_api_snow_test |
+| | cred_git_svc_git_ro |
+| | cred_api_snow_prod |
+| | cred_api_vcenter_prod |
+
+### Inventories
+
+| Naming Convention | Examples |
+|       :---:       |  :---:   |
+| inv _ < source > _ < instance, user initials or SNOW ID> _ < environment > | inv_satellite_production |
+| | inv_vcenter_prod |
+| | inv_vcenter_test |
+| | inv_snow_prod |
+| | inv_snow_test |
+| | inv_git_mygitrepo_main |
+| | inv_aap_REQ123456 |
+| | inv_git_rjo_adhoc |
+
+### Inventory Sources
+
+| Naming Convention | Examples |
+|       :---:       |  :---:   |
+| inv _ src _ < source > _ < instance, user initials or SNOW ID> _ < environment > | inv_src_satellite_production |
+| | inv_src_vcenter_prod |
+| | inv_src_vcenter_test |
+| | inv_src_snow_prod |
+| | inv_src_snow_test |
+| | inv_src_git_mygitrepo_main |
+| | inv_src_aap_REQ123456 |
+| | inv_src_git_rjo_adhoc |
+
+### Inventory Groups
+
+| Naming Convention | Examples |
+|       :---:       |  :---:   |
+| grp _ < desc> _ < instance, user initials or SNOW ID> _ < environment > | grp_satellite_upgrade |
+| | grp_satellite_rhel9 |
+| | grp_satellite_rhel9_4 |
+| | grp_snow_datacenter1 |
+| | grp_aap_rjo_testgroup |
+
+Avoid using `.` in group names, for example use `RHEL9_4` rather than `RHEL9.4`.  See also https://docs.ansible.com/ansible/latest/network/getting_started/first_inventory.html for useful advice.
+
+> Avoid spaces, hyphens, and preceding numbers (use floor_19, not 19th_floor) in your group names. Group names are case sensitive
+
+### Projects
+
+| Naming Convention | Examples |
+|       :---:       |  :---:   |
+| prj _ < desc> [ _ < personal identifier > ] | prj_rhel_soe |
+| | prj_leapp |
+| | prj_patching |
+| | prj_patching_rjo |
+| | prj_service |
+
+### Templates
+
+| Naming Convention | Examples |
+|       :---:       |  :---:   |
+| tpl _ < project description > _ < template description > [  _ < personal identifier > ] | tpl_rhel_soe_motd |
+| | tpl_rhel_soe_chrony |
+| | tpl_leapp_analysis |
+| | tpl_patching_report |
+| | tpl_patching_update |
+| | tpl_service_restart |
+
+### Workflows
+
+| Naming Convention | Examples |
+|       :---:       |  :---:   |
+| wflow _ < short description based on templates used > [  _ < personal identifier > ] | wflow_ipu_rhel7 |
+| | wflow_ipu_rhel8 |
+| | wflow_ipu_rhel8_rjo |
+| | wflow_rhel_soe |
