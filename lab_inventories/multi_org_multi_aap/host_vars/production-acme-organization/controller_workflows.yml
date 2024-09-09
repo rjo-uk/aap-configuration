@@ -197,4 +197,12 @@ controller_workflows:
             - "yes"
             - "no"
           required: false
+        - question_name: Target RHEL Major release
+          type: multiplechoice
+          variable: ipu_target
+          choices:
+            - "7"
+            - "8"
+            - "9"
+          required: false
 ...

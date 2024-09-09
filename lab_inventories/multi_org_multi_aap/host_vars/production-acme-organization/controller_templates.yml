@@ -40,6 +40,13 @@ controller_templates:
           choices:
             - grp_satellite_upgrade
           required: true
+        - question_name: Skip upgrade to latest RHEL 7.9
+          type: multiplechoice
+          variable: skip_latest_rhel7
+          choices:
+            - "yes"
+            - "no"
+          required: false
     ask_variables_on_launch: true
     ask_limit_on_launch: true
   - name: tpl_leapp_remediate
