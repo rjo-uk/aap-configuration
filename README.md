@@ -53,6 +53,19 @@ The documentation below covers the following scenarios:
     - Configuration that is unique to an Organization
     - Configuration that is unique to a specific Organization on a specific AAP server
 
+## Official configuration options
+
+The official documentation lists the parameters that can be supplied in the configuration files:
+
+* [credential](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/credential/)
+* [execution environment](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/execution_environment/)
+* [inventory source](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/inventory_source/)
+* [inventory](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/inventory/)
+* [job template](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/job_template/)
+* [project](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/project/)
+* [workflow job template](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/workflow_job_template/
+)
+
 ## Naming Conventions
 
 Although not required, a standard naming convention for Ansible Automation Platform resources provides support teams with a consistent experience and allows automation and scripting tools to use pattern matching and regular expressions to audit and manipulate the environment.  This repository uses a naming approach similar to the one used for [satellite-configuration](https://github.com/rjo-uk/satellite-configuration) and includes some opinionated conventions.
