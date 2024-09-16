@@ -59,6 +59,7 @@ The official documentation lists the parameters that can be supplied in the conf
 
 * [credential](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/credential/)
 * [execution environment](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/execution_environment/)
+* [group](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/group/m)
 * [inventory source](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/inventory_source/)
 * [inventory](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/inventory/)
 * [job template](https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller/content/module/job_template/)
