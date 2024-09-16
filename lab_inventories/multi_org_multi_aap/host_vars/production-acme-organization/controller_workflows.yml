@@ -1,6 +1,7 @@
+---
 controller_workflows:
-  - name: wflow_ipu_rhel7
-    description: In-place upgrade from RHEL 7 to RHEL 8
+  - name: wflow_ipu_rhel6
+    description: In-place upgrade from RHEL 6 to RHEL 7
     extra_vars: ''
     survey_enabled: true
     allow_simultaneous: false
@@ -13,7 +14,7 @@ controller_workflows:
     ask_limit_on_launch: true
     webhook_service: ''
     webhook_credential:
-    organization: Default
+    organization: "{{ ansible_organization_name }}"
     schedules: []
     simplified_workflow_nodes:
       - all_parents_must_converge: false
@@ -24,6 +25,7 @@ controller_workflows:
           - tpl_leapp_bigboot
         failure_nodes: []
         always_nodes: []
+        execution_environment: ee-supported-212
       - all_parents_must_converge: false
         identifier: tpl_leapp_bigboot
         unified_job_template: tpl_leapp_bigboot
@@ -32,21 +34,24 @@ controller_workflows:
           - tpl_leapp_analysis
         failure_nodes: []
         always_nodes: []
+        execution_environment: ee-supported-212
       - all_parents_must_converge: false
         identifier: tpl_leapp_analysis
         unified_job_template: tpl_leapp_analysis
+        execution_environment: ee-supported-212
         credentials: []
         success_nodes:
-          - tpl_leapp_ipu
+          - tpl_leapp_ipu_rhel6
         failure_nodes: []
         always_nodes: []
       - all_parents_must_converge: false
-        identifier: tpl_leapp_ipu
+        identifier: tpl_leapp_ipu_rhel6
         unified_job_template: tpl_leapp_ipu
         credentials: []
         success_nodes: []
         failure_nodes: []
         always_nodes: []
+        execution_environment: ee-supported-212
     notification_templates_started: []
     notification_templates_success: []
     notification_templates_error: []
@@ -61,20 +66,35 @@ controller_workflows:
           choices:
             - grp_satellite_upgrade
           required: true
-        - question_name: Set size of /boot partition
-          type: text
-          variable: partition_size
-          default: "200M"
-          required: true
-        - question_name: Skip upgrade to latest RHEL 7.9
+        - question_name: Use bigboot to alter boot partition
           type: multiplechoice
-          variable: skip_latest_rhel7
+          variable: use_bigboot
           choices:
             - "yes"
             - "no"
           required: false
-  - name: wflow_ipu_rhel8
-    description: In-place upgrade from RHEL 8 to RHEL 9
+        - question_name: Set minimum size of /boot partition
+          type: text
+          variable: partition_size
+          default: "200M"
+          required: true
+        - question_name: Go straight to next RHEL major release from current version
+          type: multiplechoice
+          variable: skip_latest_minor_updates
+          choices:
+            - "yes"
+            - "no"
+          required: false
+        - question_name: Target RHEL Major release
+          type: multiplechoice
+          variable: ipu_target
+          choices:
+            - "7"
+            - "8"
+            - "9"
+          required: false
+  - name: wflow_ipu_single
+    description: In-place upgrade from RHEL N to RHEL N+1
     extra_vars: ''
     survey_enabled: true
     allow_simultaneous: false
@@ -87,7 +107,7 @@ controller_workflows:
     ask_limit_on_launch: true
     webhook_service: ''
     webhook_credential:
-    organization: Default
+    organization: "{{ ansible_organization_name }}"
     schedules: []
     simplified_workflow_nodes:
       - all_parents_must_converge: false
@@ -135,13 +155,35 @@ controller_workflows:
           choices:
             - grp_satellite_upgrade
           required: true
-        - question_name: Set size of /boot partition
+        - question_name: Use bigboot to alter boot partition
+          type: multiplechoice
+          variable: use_bigboot
+          choices:
+            - "yes"
+            - "no"
+          required: false
+        - question_name: Set minimum size of /boot partition
           type: text
           variable: partition_size
           default: "200M"
-          required: true
-  - name: wflow_ipu_rhel7_to_rhel9
-    description: In-place upgrade from RHEL 7 to RHEL 9
+          required: false
+        - question_name: Target RHEL Major release
+          type: multiplechoice
+          variable: ipu_target
+          choices:
+            - "7"
+            - "8"
+            - "9"
+          required: false
+        - question_name: Go straight to next RHEL major release from current version
+          type: multiplechoice
+          variable: skip_latest_minor_updates
+          choices:
+            - "yes"
+            - "no"
+          required: false
+  - name: wflow_ipu_rhel_7_multi
+    description: In-place upgrade from RHEL 7 to RHEL 8 or RHEL 9
     extra_vars: ''
     survey_enabled: true
     allow_simultaneous: false
@@ -154,20 +196,20 @@ controller_workflows:
     ask_limit_on_launch: true
     webhook_service: ''
     webhook_credential:
-    organization: Default
+    organization: "{{ ansible_organization_name }}"
     schedules: []
     simplified_workflow_nodes:
       - all_parents_must_converge: false
-        identifier: wflow_ipu_rhel7
-        unified_job_template: wflow_ipu_rhel7
+        identifier: Upgrade 1
+        unified_job_template: wflow_ipu_single
         credentials: []
         success_nodes:
-          - wflow_ipu_rhel8
+          - Upgrade 2 (if requested)
         failure_nodes: []
         always_nodes: []
       - all_parents_must_converge: false
-        identifier: wflow_ipu_rhel8
-        unified_job_template: wflow_ipu_rhel8
+        identifier: Upgrade 2 (if requested)
+        unified_job_template: wflow_ipu_single
         credentials: []
         failure_nodes: []
         always_nodes: []
@@ -185,14 +227,101 @@ controller_workflows:
           choices:
             - grp_satellite_upgrade
           required: true
-        - question_name: Set size of /boot partition
+        - question_name: Use bigboot to alter boot partition
+          type: multiplechoice
+          variable: use_bigboot
+          choices:
+            - "yes"
+            - "no"
+          required: false
+        - question_name: Set minimum size of /boot partition
           type: text
           variable: partition_size
           default: "200M"
-          required: true
-        - question_name: Skip upgrade to latest RHEL 7.9
+          required: false
+        - question_name: Go straight to next RHEL major release from current version
           type: multiplechoice
-          variable: skip_latest_rhel7
+          variable: skip_latest_minor_updates
+          choices:
+            - "yes"
+            - "no"
+          required: false
+        - question_name: Target RHEL Major release
+          type: multiplechoice
+          variable: ipu_target
+          choices:
+            - "7"
+            - "8"
+            - "9"
+          required: false
+  - name: wflow_ipu_rhel_6_multi
+    description: In-place upgrade from RHEL 6 to RHEL 7 or RHEL 8 or RHEL 9
+    extra_vars: ''
+    survey_enabled: true
+    allow_simultaneous: false
+    ask_variables_on_launch: false
+    inventory: inv_satellite_production
+    limit: client2.london.example.com
+    scm_branch:
+    ask_inventory_on_launch: true
+    ask_scm_branch_on_launch: false
+    ask_limit_on_launch: true
+    webhook_service: ''
+    webhook_credential:
+    organization: "{{ ansible_organization_name }}"
+    schedules: []
+    simplified_workflow_nodes:
+      - all_parents_must_converge: false
+        identifier: RHEL 6 to RHEL 7
+        unified_job_template: wflow_ipu_rhel6
+        credentials: []
+        success_nodes:
+          - RHEL 7 to RHEL 8
+        failure_nodes: []
+        always_nodes: []
+      - all_parents_must_converge: false
+        identifier: RHEL 7 to RHEL 8
+        unified_job_template: wflow_ipu_single
+        credentials: []
+        failure_nodes: []
+        always_nodes: []
+        success_nodes:
+          - RHEL 8 to RHEL 9
+      - all_parents_must_converge: false
+        identifier: RHEL 8 to RHEL 9
+        unified_job_template: wflow_ipu_single
+        credentials: []
+        failure_nodes: []
+        always_nodes: []
+    notification_templates_started: []
+    notification_templates_success: []
+    notification_templates_error: []
+    notification_templates_approvals: []
+    survey_spec:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory group
+          type: multiplechoice
+          variable: upgrade_group
+          choices:
+            - grp_satellite_upgrade
+          required: true
+        - question_name: Use bigboot to alter boot partition
+          type: multiplechoice
+          variable: use_bigboot
+          choices:
+            - "yes"
+            - "no"
+          required: false
+        - question_name: Set minumum size of /boot partition
+          type: text
+          variable: partition_size
+          default: "200M"
+          required: false
+        - question_name: Go straight to next RHEL major release from current version
+          type: multiplechoice
+          variable: skip_latest_minor_updates
           choices:
             - "yes"
             - "no"
