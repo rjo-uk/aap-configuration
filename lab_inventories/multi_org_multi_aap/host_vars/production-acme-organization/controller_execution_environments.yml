@@ -1,0 +1,7 @@
+---
+controller_execution_environments:
+  - name: ee-supported-212
+    image: "registry.redhat.io/ansible-automation-platform-21/ee-supported-rhel8"
+    pull: missing
+    credential: cred_registry_redhat_user
+...
