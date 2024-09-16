@@ -5,6 +5,7 @@ controller_templates:
     project: prj_leapp
     playbook: analysis.yml
     inventory: inv_satellite_production
+    execution_environment: Default execution environment
     limit: client2.london.example.com
     credentials:
       - cred_mach_root
@@ -21,11 +22,13 @@ controller_templates:
           required: true
     ask_variables_on_launch: false
     ask_limit_on_launch: true
+    ask_execution_environment_on_launch: true
   - name: tpl_leapp_ipu
     description: In-place operating system upgrade
     project: prj_leapp
     playbook: in-place-upgrade.yml
     inventory: inv_satellite_production
+    execution_environment: Default execution environment
     limit: client2.london.example.com
     credentials:
       - cred_mach_root
@@ -40,20 +43,22 @@ controller_templates:
           choices:
             - grp_satellite_upgrade
           required: true
-        - question_name: Skip upgrade to latest RHEL 7.9
+        - question_name: Go straight to next RHEL major release from current version
           type: multiplechoice
-          variable: skip_latest_rhel7
+          variable: skip_latest_minor_updates
           choices:
             - "yes"
             - "no"
           required: false
     ask_variables_on_launch: true
     ask_limit_on_launch: true
+    ask_execution_environment_on_launch: true
   - name: tpl_leapp_remediate
     description: Perform remediations needed to successfully perform IPU
     project: prj_leapp
     playbook: remediate.yml
     inventory: inv_satellite_production
+    execution_environment: Default execution environment
     limit: client2.london.example.com
     credentials:
       - cred_mach_root
@@ -70,11 +75,13 @@ controller_templates:
           required: true
     ask_variables_on_launch: true
     ask_limit_on_launch: true
+    ask_execution_environment_on_launch: true
   - name: tpl_leapp_bigboot
     description: Configure boot partition size
     project: prj_leapp
     playbook: bigboot.yml
     inventory: inv_satellite_production
+    execution_environment: Default execution environment
     limit: client2.london.example.com
     credentials:
       - cred_mach_root
@@ -89,11 +96,19 @@ controller_templates:
           choices:
             - grp_satellite_upgrade
           required: true
-        - question_name: Set size of /boot partition
+        - question_name: Use bigboot to alter /boot partition
+          type: multiplechoice
+          variable: use_bigboot
+          choices:
+            - "yes"
+            - "no"
+          required: false
+        - question_name: Set minumum size of /boot partition
           type: text
           variable: partition_size
-          default: "1.5G"
+          default: "200M"
           required: false
     ask_variables_on_launch: false
     ask_limit_on_launch: true
+    ask_execution_environment_on_launch: true
 ...
